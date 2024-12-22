@@ -1,5 +1,5 @@
 import FastGlob from 'fast-glob'
-import { dirname, normalize, relative, resolve, extname } from 'node:path'
+import { dirname, normalize, relative, resolve, extname, parse } from 'node:path'
 import { merge } from '../utils/common.js'
 import fs from 'node:fs'
 import chokidar from 'chokidar'
@@ -85,9 +85,9 @@ const imports = (options, config) => {
                         }
 
                         if (fs.statSync(path).isFile()) {
-                            imports = imports + `@import "./${relativePath}";\r\n`
+                            imports = imports + `@use "./${relativePath}" as ${parse(path).name};\r\n`
                         } else {
-                            imports = imports + `@import "./${relativePath}/${filename}";\r\n`
+                            imports = imports + `@use "./${relativePath}/${filename}" as ${parse(path).name};\r\n`
                         }
                     })
                 }
